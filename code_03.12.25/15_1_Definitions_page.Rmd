@@ -1,0 +1,91 @@
+---
+output: 
+  pdf_document:
+    latex_engine: xelatex
+    dev: "pdf"
+    keep_md: false
+    keep_tex: false
+geometry: margin=0.5in
+params:
+  la_name: "Default LA"
+  hb_name: "Default HB"
+header-includes:
+  - \usepackage{graphicx}
+  - \usepackage{fancyvrb}
+  - \usepackage{float}
+  - \floatplacement{figure}{H}
+  - \usepackage{fontspec}
+  - \setmainfont{Arial}
+  - \setsansfont{Arial}
+  - \usepackage{sectsty}
+  - \allsectionsfont{\sffamily}
+  - \pagestyle{empty}
+
+---
+\vspace{-10em}
+\begin{center}
+{\fontsize{14}{16} \bfseries Definitions of Indicators}
+\end{center}
+
+\vspace{3em}
+
+```{r housekeeping, include=FALSE}
+library(flextable)
+library(officer)
+library(rmarkdown)
+library(tidyverse)
+library(cowplot)
+library(grid)
+library(ggpubr)
+
+hostname <- Sys.info()["nodename"]
+
+if (hostname == "DESKTOP-76PIK88") {
+  dir <- ""
+} else if (hostname == "AHSS-COL-23012") {
+  dir <- "C:/Users/tstrain/OneDrive - University of Edinburgh/LA_Spine_Charts"
+} else if (hostname == "RAY") {
+  dir <- "C:/Users/Ray_/OneDrive - University of Edinburgh/Tessa Strain's files - LA_Spine_Charts"
+} else {
+  stop("Unrecognised machine name. Please manually set 'dir'.")
+}
+
+dir2 <- paste0(dir,"\\code\\")
+```
+
+\vspace{-4em}
+
+```{r table, echo=FALSE}
+if (spine_data_version == "current") {
+  source(paste0(dir2,"15_2_Definitions_table_dataset_2016-19.R"))
+}
+if (spine_data_version == "new") {
+  source(paste0(dir2,"15_2_Definitions_table_dataset_2021-24.R"))
+}
+
+indicator_defs <- do.call(rbind, lapply(variables_list, as.data.frame))
+rownames(indicator_defs) <- NULL
+
+indicator_defs <- indicator_defs %>%
+                  select(-order) %>%
+                  select(name, dataset, definition) %>%
+                  rename(Indicator = name,
+                         Dataset = dataset,
+                         Definition = definition)
+
+
+flextable(indicator_defs) %>%
+  align(align = "left", part = "all") %>%
+    fontsize(size = 10, part = "all") %>%
+    width(j = 1, width = 3.2) %>%   
+    width(j = 2, width = 0.75) %>%  
+    width(j = 3, width = 3.2) %>%    
+  set_table_properties(layout="fixed", width=1) %>%
+  border_outer(border = fp_border(color="black", width=2)) %>%
+  border_inner(border = fp_border(color="black", width=1))
+
+```
+\vspace{2em}
+SHeS: Scottish Health Survey; SHS: Scottish Household Survey. 
+The years refer to the data used for the indicator chart on page 2 and the current data (orange line) on page 3. Due to questionnaire changes during the period 2016-2019, some indicators are based on specific years rather than the full four years.
+The SHS provides data at local authority level (**`r params$la_name` Local Authority**), the SHeS provides data at Health Board level (**`r params$hb_name` Health Board**).

@@ -1,0 +1,31 @@
+---
+output: 
+  pdf_document:
+    latex_engine: xelatex
+    dev: "pdf"
+    keep_md: false
+    keep_tex: false
+geometry: margin=0.05in
+params:
+  la_name: "Default LA"
+  hb_name: "Default HB"
+header-includes:
+  - \usepackage{graphicx}
+  - \usepackage{fancyvrb}
+  - \usepackage{float}
+  - \floatplacement{figure}{H}
+  - \usepackage{fontspec}
+  - \setmainfont{Arial}
+  - \setsansfont{Arial}
+  - \usepackage{sectsty}
+  - \allsectionsfont{\sffamily}
+---
+\vspace{-9em}
+  
+```{r fig, echo=FALSE, fig.align='center', out.width='100%', out.height='100%', fig.pos='t'}
+knitr::include_graphics(
+  file.path(dir, "output", "PDFs", "2. Main spine charts", 
+            paste0(gsub(" ", "_", params$la_name), "_main_chart.pdf"))
+)
+```
+

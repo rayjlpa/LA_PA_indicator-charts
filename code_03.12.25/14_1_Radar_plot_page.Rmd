@@ -1,0 +1,111 @@
+---
+output: 
+  pdf_document:
+    latex_engine: xelatex
+geometry: margin=0.15in
+params:
+  la_name: "Default LA"
+  hb_name: "Default HB"
+header-includes:
+  - \usepackage{graphicx}
+  - \usepackage{fancyvrb}
+  - \usepackage{float}
+  - \floatplacement{figure}{H}
+  - \usepackage{fontspec}
+  - \setmainfont{Arial}
+  - \setsansfont{Arial}
+  - \usepackage{sectsty}
+  - \allsectionsfont{\sffamily}
+
+---
+\vspace{-10em}
+\begin{center}
+{\LARGE \bfseries `r params$la_name`: Changes over time}
+\end{center}
+
+\vspace{3em}
+
+```{r housekeeping, include=FALSE}
+library(ggradar)
+
+hostname <- Sys.info()["nodename"]
+
+if (hostname == "DESKTOP-76PIK88") {
+  dir <- ""
+} else if (hostname == "AHSS-COL-23012") {
+  dir <- "C:/Users/tstrain/OneDrive - University of Edinburgh/LA_Spine_Charts"
+} else if (hostname == "RAY") {
+  dir <- "C:/Users/Ray_/OneDrive - University of Edinburgh/Tessa Strain's files - LA_Spine_Charts"
+} else {
+  stop("Unrecognised machine name. Please manually set 'dir'.")
+}
+
+dir3 <- paste0(dir,"\\output\\PDFs\\3. Radar plots\\")
+
+```
+\vspace{-4em}
+
+```{r code, echo=FALSE, warning=FALSE, message=FALSE}
+source(paste0(dir2,"14_2_Radar_plot.R"))
+```
+
+```{r fig.height=8, fig.width=11, echo=FALSE, warning=FALSE, message=FALSE}
+plot
+```
+The indicator numbers refer to table on page 4 for the full definitions and the survey that provides the data for each indicator. SHeS: Scottish Health Survey; SHS: Scottish Household Survey. For the earliest data (blue line), SHS indicators use 2015 and SHeS indicators use 2012-15 combined years of data. For the current data (orange line), SHS indcators use 2019. Please refer to page 4 for the years of SHeS data as this can vary due to questionnaire changes during the period.
+\vspace{0em}
+```{r subsystem, echo=FALSE, warning=FALSE}
+colour_ref <- data.frame(system = c("Overarching", "Sport and Active Recreation",
+                                    "Active Places of Learning", "Active Travel",
+                                    "Active Workplaces", "Active Places and Spaces"),
+                         colour = c("#a8cfff", "#4e7bcf",
+                                    "#f47735", "#f4bd35",
+                                    "#a391af", "#76da1c"))
+
+
+subsystem <-ggplot(colour_ref, aes(x=1, y = system, fill = system)) +
+              geom_tile(width=0, height=0) +
+              scale_fill_manual(values = setNames(colour_ref$colour, 
+                                                  colour_ref$system)) +
+              theme_void() +
+              labs(fill="Subsystem colour legend") +
+              theme(
+                legend.position = "right",
+                legend.title.position = "top",
+                legend.title = element_text(size=14, hjust=0.5, face="bold"),
+                legend.text = element_text(size=10),
+                legend.direction = "horizontal",
+                plot.margin = margin(0, 10, 0, 10),
+                plot.background = element_rect(colour="black", fill=NA),
+                panel.background = element_rect(colour="black", fill=NA)
+              )   +
+                guides(fill = guide_legend(nrow = 2))
+
+legend <- cowplot::get_legend(subsystem)
+ggsave(paste0(dir3,"14_3_subsystemlegend.pdf"), plot = as_ggplot(legend), width = 8, height = 1)
+```
+
+```{r fig, echo=FALSE, fig.align='center', out.width='95%', fig.pos='H'}
+knitr::include_graphics(paste0(dir3,"14_3_subsystemlegend.pdf"))
+```
+\vspace{0em}
+\begin{center}
+{\fontsize{14}{16} \bfseries Indicator plot legends}
+\end{center}
+
+\vspace{-0.8em}
+
+```{r legs, echo=FALSE}
+source(paste0(dir2,"14_4_Create_legends.R"))
+```
+
+```{r fig.height=2, fig.width=8.2, echo=FALSE}
+legends <- grid.arrange(leg1, leg2, nrow=1, widths=c(0.5,0.5))
+```
+\textit{*Percentiles give an indication of the spread of the data. The 25th percentile is higher than 25\% and lower than 75\% of the data.}
+
+```{r cleanup, include=FALSE}
+dirs <- list.dirs(".", full.names = TRUE, recursive = FALSE)
+to_delete <- dirs[grepl("_files$", dirs)]
+unlink(to_delete, recursive = TRUE, force = TRUE)
+```

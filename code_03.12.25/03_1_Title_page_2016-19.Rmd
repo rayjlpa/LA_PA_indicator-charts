@@ -1,0 +1,57 @@
+---
+output:
+  pdf_document:
+    latex_engine: xelatex
+    includes:
+      in_header: 03_2_header.tex
+documentclass: extarticle
+fontsize: 10pt
+params:
+  la_name: "Default LA"
+  hb_name: "Default HB"
+---
+\vspace{-6.5em}
+\begin{center}
+{\LARGE \bfseries `r params$la_name`: Physical Activity Indicator Chart}
+\end{center}
+
+
+***Purpose***  
+  
+The Local Authority Physical Activity Indicator Charts provide insight into the levels of physical activity in each Local Authority in Scotland. This document shows the data for **`r params$la_name`** relative to other Local Authorities and the Scotland average. 
+  
+These charts aim to support the use of physical activity data in Local Authority planning and decision making by collating specific Local Authority data in a single document in an accessible way.  
+  
+These charts are an update and expansion of charts previously produced in 2016. There was a need to revise to include the latest data and align the indicators with  \textbf{\underline{\textcolor{blue}{\href{https://www.gov.scot/publications/physical-activity-health-framework/}{Scotland’s National Framework on Physical Activity for Health}}}}.  
+  
+\vspace{1em}
+***Sections of the document***  
+  
+The document is divided into three sections:  
+1.	Indicator chart: showing the latest available data for all indicators  
+2.	Spider plot: showing change over time for selected indicators  
+3.	Definitions of indicators and references
+\vspace{1em}   
+***Data included***  
+  
+There are 22 different indicators of physical activity aligning with [Scotland’s National Framework on Physical Activity for Health](https://www.gov.scot/publications/physical-activity-health-framework/).  The data are from two nationally representative surveys: the Scottish Household Survey (SHS) and the Scottish Health Survey (SHeS). The SHS provides data at local authority level, the SHeS provides data at Health Board level. Therefore, in this document, indicators are shown for **`r params$la_name` Local Authority** and **`r params$hb_name` Health Board** where appropriate. The latest available data to generate Health Board estimates for the SHeS is the combined 2016-2019 dataset. In order to align time periods, the 2019 SHS dataset (providing Local Authority estimates) has been used.  
+
+Sample sizes below 100 are asterisked (\*). Some local authorities do not have any areas in the lowest SIMD quintile and therefore this indicator is marked as N/A and double asterisked (\*\*).
+  
+\vspace{1em}
+***Authorship team***  
+  
+These charts have been produced by Jian Lei, Jinghua Chen, and Tessa Strain of the Physical Activity for Health Research Centre, University of Edinburgh, in collaboration with The Scottish Government, Public Health Scotland and NHS Dumfries and Galloway.  
+
+\vspace{1em}
+***Further resources***
+\vspace{-0.5em}
+
+- \textbf{\underline{\textcolor{blue}{\href{https://www.gov.scot/publications/physical-activity-health-framework/}{Scotland’s National Framework on Physical Activity for Health}}}}
+
+- \textbf{\underline{\textcolor{blue}{\href{https://publichealthscotland.scot/publications/estimating-the-burden-of-disease-attributable-to-physical-inactivity-in-scotland/estimating-the-burden-of-disease-attributable-to-physical-inactivity-in-scotland-17-september-2024/}{Estimating the burden of disease attributable to physical inactivity in Scotland}}}}
+
+- \textbf{\underline{\textcolor{blue}{\href{https://publichealthscotland.scot/publications/a-systems-based-approach-to-physical-activity-in-scotland/}{A systems-based approach to physical activity in Scotland}}}}
+
+
+
